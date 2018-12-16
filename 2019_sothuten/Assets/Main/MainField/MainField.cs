@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class MainField : GameComponent {
     [SerializeField]
-    private static MainField Instance;
+    public static MainField Instance;
 
     [SerializeField]
-    private Collider _FiledCollider;
+    private BoxCollider _FiledCollider;
 
     // Use this for initialization
     void Awake () {
@@ -19,7 +19,18 @@ public class MainField : GameComponent {
         Instance = this;
 	}
 
-    public override void Init(Action CompleteCallback)
+    public Vector3 Center
+    {
+        get { return transform.position; }
+    }
+
+    public Vector3 GetRundomPos()
+    {
+        Vector3 rand = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f), 0.0f);
+        return _FiledCollider.transform.position + Vector3.Scale(Vector3.Scale(_FiledCollider.transform.localScale, _FiledCollider.size), rand);
+    }
+
+    public override IEnumerator Init()
     {
         throw new NotImplementedException();
     }

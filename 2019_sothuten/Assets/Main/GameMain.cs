@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameMain : MonoBehaviour {
-	void Start () {
+    [SerializeField]
+    private ObjectSpawner _ObjectSpawner;
+
+
+    void Start () {
         StartCoroutine(MainCoroutine());
 	}
 
     private IEnumerator MainCoroutine()
     {
         yield return InitCoroutine();
+
+        _ObjectSpawner.StartRunning(() =>{  });
     }
 
     /// <summary>
@@ -18,6 +24,10 @@ public class GameMain : MonoBehaviour {
     /// <returns></returns>
     private IEnumerator InitCoroutine()
     {
-        yield return null;
+        yield return null; //全Startを待つため
+        //Init
+        {
+            yield return _ObjectSpawner.Init();
+        }
     }
 }

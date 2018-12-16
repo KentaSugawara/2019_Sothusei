@@ -20,6 +20,8 @@ public class InputManager : MonoBehaviour {
 
     public Vector3 ShotPosition { get; private set; }
 
+    public Vector3 HandFieldPosition { get; private set; }
+
     public bool TriggerDown { get; private set; }
 
     #endregion
@@ -59,7 +61,7 @@ public class InputManager : MonoBehaviour {
             Debug.DrawRay(ray.origin, ray.direction * 10.0f);
 
             //手の座標
-            HandPosition = ray.GetPoint(1.0f);
+            HandPosition = ray.GetPoint(3.0f);
 
             //トリガー入力
             TriggerDown = Input.GetMouseButtonDown(0);
@@ -68,7 +70,7 @@ public class InputManager : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, 100.0f, 1 << (int)(GameEnum.Layers.Filed)))
             {
                 ShotPosition = hit.point;
-                Debug.Log(ShotPosition);
+                HandFieldPosition = hit.point;
             }
 
             yield return null;
