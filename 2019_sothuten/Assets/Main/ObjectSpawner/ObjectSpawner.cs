@@ -76,7 +76,7 @@ public class ObjectSpawner : GameComponent {
     {
         for (int i = 0; i < _MainObjects.Length; ++i)
         {
-            _MainObjects[i].Init(_Settings_MainObject, i);
+            _MainObjects[i].Init(_Settings_MainObject, i, _Prefab_MainObject.transform.localScale);
             yield return null;
         }
     }

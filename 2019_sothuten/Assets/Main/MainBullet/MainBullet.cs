@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainBullet : MonoBehaviour {
+    [System.NonSerialized]
     public static MainBullet Instance;
 
     [SerializeField]

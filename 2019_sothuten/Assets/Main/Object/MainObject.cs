@@ -12,15 +12,18 @@ public class MainObject : MonoBehaviour {
     private ObjectSpawner.ObjectSettings _Settings;
     private int _ListIndex;
 
+    private Vector3 _StartScale;
+
     public void SetVisible(bool value)
     {
         _Renderer.enabled = value;
     }
 
-    public void Init(ObjectSpawner.ObjectSettings Settings, int index)
+    public void Init(ObjectSpawner.ObjectSettings Settings, int index, Vector3 StartScale)
     {
         _Settings = Settings;
         _ListIndex = index;
+        _StartScale = StartScale;
         SetVisible(false);
         StopAllCoroutines();
     }
@@ -66,7 +69,7 @@ public class MainObject : MonoBehaviour {
             transform.localScale
                 = Vector3.Lerp(
                     Vector3.zero,
-                    Vector3.one,
+                    _StartScale,
                     EasingLerps.EasingLerp(
                     _Settings._Spawn_Scale_EaseSettings._Get_EasingType,
                     _Settings._Spawn_Scale_EaseSettings._Get_InOutType,
@@ -89,8 +92,8 @@ public class MainObject : MonoBehaviour {
         {
             transform.localScale
                 = Vector3.Lerp(
+                    _StartScale,
                     Vector3.zero,
-                    Vector3.one,
                     EasingLerps.EasingLerp(
                     _Settings._Hide_Scale_EaseSettings._Get_EasingType,
                     _Settings._Hide_Scale_EaseSettings._Get_InOutType,
@@ -100,6 +103,8 @@ public class MainObject : MonoBehaviour {
                     );
             yield return null;
         }
+
+        Hide();
     }
 
     private IEnumerator RoutineGet = null;
@@ -119,7 +124,7 @@ public class MainObject : MonoBehaviour {
     private IEnumerator GetRoutine(Vector3 FromCenterVector)
     {
         float e;
-        Vector3 PlayerPos = Camera.main.transform.position + Vector3.down * 0.5f + Vector3.forward * 0.2f;
+        Vector3 PlayerPos = InputManager.Instance.HandPosition;//Camera.main.transform.position + Vector3.down * 0.5f + Vector3.forward * 0.2f;
         Vector3 StartPos = transform.position;
         Vector3 StartScale = transform.localScale;
         Vector3 v = (StartPos - PlayerPos).normalized;
@@ -140,9 +145,9 @@ public class MainObject : MonoBehaviour {
                     1.0f);
 
             bz1 = Vector3.Lerp(StartPos, BezierPos, e);
-            bz2 = Vector3.Lerp(BezierPos, PlayerPos, e);
+            bz2 = Vector3.Lerp(BezierPos, InputManager.Instance.HandPosition, e);
             transform.position = Vector3.Lerp(bz1, bz2, e);
-            transform.localScale = Vector3.Lerp(StartScale, Vector3.zero, e);
+            transform.localScale = Vector3.Lerp(StartScale, Vector3.one * 0.03f, e);
 
             yield return null;
         }

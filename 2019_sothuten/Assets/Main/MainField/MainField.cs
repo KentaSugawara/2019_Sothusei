@@ -27,7 +27,7 @@ public class MainField : GameComponent {
     public Vector3 GetRundomPos()
     {
         Vector3 rand = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f), 0.0f);
-        return _FiledCollider.transform.position + Vector3.Scale(Vector3.Scale(_FiledCollider.transform.localScale, _FiledCollider.size), rand);
+        return transform.position + Vector3.Scale(Vector3.Scale(_FiledCollider.transform.localScale, _FiledCollider.size), rand);
     }
 
     public override IEnumerator Init()
