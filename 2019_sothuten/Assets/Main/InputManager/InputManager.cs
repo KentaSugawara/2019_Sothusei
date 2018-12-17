@@ -15,6 +15,9 @@ public class InputManager : MonoBehaviour {
     [SerializeField]
     private Transform _RightHandTransform;
 
+    [SerializeField]
+    private Transform _ShotPostObj;
+
     #region Properties
     public Vector3 HandPosition { get; private set; }
 
@@ -71,6 +74,7 @@ public class InputManager : MonoBehaviour {
             {
                 ShotPosition = hit.point;
                 HandFieldPosition = hit.point;
+                _ShotPostObj.position = hit.point;
             }
 
             yield return null;
