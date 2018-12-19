@@ -103,11 +103,11 @@ public class InputManager : MonoBehaviour {
         RaycastHit hit;
         while (true)
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f));
             Debug.DrawRay(ray.origin, ray.direction * 10.0f);
 
             //手の座標
-            HandPosition = ray.GetPoint(3.0f);
+            HandPosition = ray.GetPoint(1.0f);
 
             //トリガー入力
             TriggerDown = Input.GetMouseButtonDown(0);
@@ -118,6 +118,7 @@ public class InputManager : MonoBehaviour {
                 ShotPosition = hit.point;
                 HandFieldPosition = hit.point;
                 _ShotPosObj.position = hit.point;
+                _HandPosObj.position = hit.point;
             }
 
             yield return null;

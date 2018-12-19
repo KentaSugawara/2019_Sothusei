@@ -34,6 +34,9 @@ public class MainBullet : MonoBehaviour {
     private TrailRenderer _TrailRenderer;
 
     [SerializeField]
+    private ParticleSystem _HandPosParticleSystem;
+
+    [SerializeField]
     private int _MaxBombs = 5;
 
     [SerializeField]
@@ -54,6 +57,7 @@ public class MainBullet : MonoBehaviour {
 
     private void Awake()
     {
+        _HandPosParticleSystem.Stop();
         _Rigidbody = GetComponent<Rigidbody>();
         if (Instance != null)
         {
@@ -159,27 +163,8 @@ public class MainBullet : MonoBehaviour {
     {
         Debug.Log("Shot");
         _isSetBullet = true;
-        //発射される前
-        //Vector3 v;
-        //float d;
-        //while (true)
-        //{
-        //    v = (transform.position - _NextShotposition);
-        //    d = v.sqrMagnitude;
-        //    if (d < 0.01f)
-        //    {
-        //        //ここで着弾した
-        //        break;
-        //    }
 
-        //    //移動
-        //    //_Rigidbody.MovePosition(Vector3.Lerp(transform.position, _NextShotposition, _ShotSpeedRatio));
-
-        //    //移動
-
-
-        //    yield return null;
-        //}
+        _HandPosParticleSystem.Play();
         _MovePositionList.Clear();
         Vector3 StartPos = transform.position;
         for (float t = 0.0f, e = 0.0f; t < _ShotNeedSeconds; t += Time.deltaTime)
@@ -228,12 +213,12 @@ public class MainBullet : MonoBehaviour {
     private IEnumerator BulletSettingPositionCoroutine()
     {
         Debug.Log("BulletSettingPosition");
-        //_MovePositionList.Clear();
         for (float t = 0.0f; t < _BulletSettingPositionSeconds; t += Time.deltaTime)
         {
             _MovePositionList.Add(InputManager.Instance.HandFieldPosition);
             yield return null;
         }
+        _HandPosParticleSystem.Stop();
     }
 
     /// <summary>
@@ -242,19 +227,14 @@ public class MainBullet : MonoBehaviour {
     /// <returns></returns>
     private IEnumerator BulletMoveCoroutine()
     {
-        Debug.Log("BulletMoveCoroutine");
-        int cntList = _MovePositionList.Count - 1;
+        Debug.Log("BulletMoveCoroutine");   
+        int cntList = _MovePositionList.Count;
         _Rigidbody.velocity = Vector3.zero;
         _TrailRenderer.enabled = true;
         //int Target = 0;
         for (float t = 0.0f; t < _BulletMoveSeconds; t += Time.deltaTime)
         {
             _Rigidbody.MovePosition(_MovePositionList[(int)(t / _BulletMoveSeconds * cntList)]);
-
-            //Target = (int)((t / _BulletMoveSeconds) * cntList) + 1;
-            //if (Target >= cntList) Target = cntList - 1;
-            //_Rigidbody.AddForce((_MovePositionList[Target] - _MovePositionList[(int)(t / _BulletMoveSeconds * cntList)]).normalized * 100.0f, ForceMode.Impulse);
-
             yield return null;
         }
         _Rigidbody.velocity = Vector3.zero;
@@ -262,7 +242,6 @@ public class MainBullet : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
         var comp = other.GetComponent<MainObject>();
         if (comp != null)
         {

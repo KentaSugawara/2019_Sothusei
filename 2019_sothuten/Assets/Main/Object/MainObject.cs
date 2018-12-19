@@ -37,6 +37,7 @@ public class MainObject : MonoBehaviour {
         StopAllCoroutines();
         transform.position = Position;
         _Collider.enabled = true;
+        _Renderer.material.color = _Settings._Color;
         SetVisible(true);
         StartCoroutine(Spawn_Pos_Routine(Position));
         StartCoroutine(Spawn_Scale_Routine());
@@ -111,6 +112,7 @@ public class MainObject : MonoBehaviour {
     public void Get()
     {
         if (RoutineGet != null) StopCoroutine(RoutineGet);
+        _Renderer.material.color = _Settings._GetColor;
         RoutineGet = GetRoutine((transform.position - MainField.Instance.Center).normalized);
         _Collider.enabled = false;
         StartCoroutine(RoutineGet);

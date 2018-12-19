@@ -34,6 +34,8 @@ public class ObjectSpawner : GameComponent {
     {
         public int _MaxSpawn;
         public float _HideSeconds;
+        public Color _Color;
+        public Color _GetColor;
         public EaseSettings _Spawn_Pos_EaseSettings;
         public EaseSettings _Spawn_Scale_EaseSettings;
         public EaseSettings _Get_Pos_EaseSettings;
